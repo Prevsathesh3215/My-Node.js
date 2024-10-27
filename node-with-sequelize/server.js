@@ -14,13 +14,18 @@ const corsOptions = {
 
 //routers
 
-const router = require('./routes/userRoutes.js')
+const userRouter = require('./routes/userRoutes.js')
+const unitRouter = require('./routes/unitRoutes.js')
+const unitDataRouter = require('./routes/unitDataRoutes.js')
+
 
 //allow json to be sent and used
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
-app.use('/api/users', router)
+app.use('/api/users', userRouter)
+app.use('/api/units', unitRouter)
+app.use('/api/unitsdata', unitDataRouter)
 
 
 //middleware

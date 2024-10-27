@@ -11,7 +11,11 @@ router.get('/allUsers', usersController.getAllUsers)
 
 router.get('/getSingleUser', usersController.getOneUser)
 
-router.get('/addPublishedUsers', usersController.getPublishedUser)
+//router.get('/addPublishedUsers', usersController.getPublishedUser)
+
+router.get('/:id', usersController.getOneUser)
+
+router.put('/:id', usersController.updateUser)
 
 router.delete('/:id', usersController.deleteUser)
 

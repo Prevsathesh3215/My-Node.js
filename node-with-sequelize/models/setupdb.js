@@ -35,7 +35,7 @@ db.sequelize = sequelize;
 
 db.users  = require('../models/userModel.js')(sequelize, DataTypes)
 db.units = require('../models/unitsModel.js')(sequelize, DataTypes)
-db.unitsData = require('../models/unitsDataModel.js')(sequelize, DataTypes)
+db.unitsData = require('./unitDataModel.js')(sequelize, DataTypes)
 
 
 sequelize.sync({ force : false})
