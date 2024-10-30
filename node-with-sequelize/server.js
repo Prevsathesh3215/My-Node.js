@@ -1,5 +1,4 @@
 const express = require('express');
-const colors = require('./colors.json')
 const cors = require('cors')
 
 const app = express();
@@ -8,24 +7,27 @@ const app = express();
 
 const corsOptions = {
   origin: 'http://localhost:4000', // Allow only requests from this origin
-  methods: 'GET,POST,DELETE', // Allow only these methods
+  methods: 'GET,POST, PUT, DELETE', // Allow only these methods
   allowedHeaders: ['Content-Type', 'Authorization'] // Allow only these headers
 };
 
 //routers
 
-const userRouter = require('./routes/userRoutes.js')
+// const userRouter = require('./routes/userRoutes.js')
 const unitRouter = require('./routes/unitRoutes.js')
 const unitDataRouter = require('./routes/unitDataRoutes.js')
+const regisUserRouter = require('./routes/regisUserRoutes.js')
 
 
 //allow json to be sent and used
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
-app.use('/api/users', userRouter)
+app.use('/api/users', regisUserRouter)
 app.use('/api/units', unitRouter)
 app.use('/api/unitsdata', unitDataRouter)
+// app.use('/api/regisUser', regisUserRouter)
+
 
 
 //middleware

@@ -2,7 +2,7 @@ const db = require('../models/setupdb.js')
 
 
 const Users = db.users
-const Units = db.units
+
 
 
 const addUsers = async (req, res) => {
@@ -31,7 +31,7 @@ const getAllUsers = async (req, res) => {
 
 const getOneUser = async (req, res) => {
 
-  let id = req.query.id
+  let id = req.params.id
   console.log(id)
   let users = await Users.findOne({ where: {id : id }})
   res.status(200).send(users)
@@ -40,18 +40,9 @@ const getOneUser = async (req, res) => {
 }
 
 
-const getPublishedUser = async (req, res) => {
-
-  let users = await Users.findAll({ where: {published : true }})
-  res.status(200).send(users)
-
-
-}
-
-
 const deleteUser = async (req, res) => {
 
-  let paramId = req.query.id
+  let paramId = req.params.id
   console.log(paramId)
   await Users.destroy({
     where: {
@@ -59,6 +50,19 @@ const deleteUser = async (req, res) => {
     },
   },
   );
+  res.status(200).send('record deleted')
+
+}
+
+
+const updateUser = async (req, res) => {
+
+  let id = req.params.id
+
+  const user = await Users.update(req.body, { where: { id: id }})
+
+  res.status(200).send("record updated")
+ 
 
 }
 
@@ -66,6 +70,6 @@ module.exports = {
   addUsers,
   getAllUsers,
   getOneUser,
-  getPublishedUser,
-  deleteUser
+  deleteUser,
+  updateUser,
 }
