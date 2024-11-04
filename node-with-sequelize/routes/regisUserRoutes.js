@@ -10,6 +10,12 @@ router.post('/register', userLogin.registerUser)
 
 router.get('/login', userLogin.checkLogin)
 
+router.put('/changePassword', [userLogin.userLogin, regisUserController.changePswd])
+
+router.put('/changeRole', [userLogin.userLogin, regisUserController.changeRole])
+
+router.put('/changeStatus', [userLogin.userLogin, regisUserController.changeStatus])
+
 router.get('/allUsers', [userLogin.userLogin, regisUserController.getAllRegisUser])
 
 // router.get('/getSingleUser', regisUserController.getOneRegisUser)

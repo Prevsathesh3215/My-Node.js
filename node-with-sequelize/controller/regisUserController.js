@@ -1,4 +1,5 @@
 const db = require('../models/setupdb.js')
+const { encryptPswd } = require('../helper/encryptPassword.js')
 
 const RegisUser = db.regisUser
 
@@ -108,10 +109,103 @@ const updateRegisUser = async (req, res) => {
 }
 
 
+const changePswd = async (req, res) => {
+
+  let queryIden = await RegisUser.findOne({ where: { id : req.body.id }})
+
+  if (queryIden.role === 'admin'){
+    let targetRecord = await RegisUser.findOne({ where: { id : req.body.changed.id }})
+    
+    targetRecord.password = await encryptPswd(req.body.changed.password);
+    console.log(targetRecord.password)
+
+    await targetRecord.save()
+    .then(res.status(200).json({
+      success: true,
+      message: "record updated"
+    }))
+    .catch( (err) => {
+      res.send(err)
+    })
+
+  
+    
+  }
+  else{
+    return res.status(403).json({
+      success: false,
+      error: "Not authorized"   
+    })   
+  }
+}
+
+
+const changeRole = async (req, res) => {
+
+  let queryIden = await RegisUser.findOne({ where: { id : req.body.id }})
+
+  if (queryIden.role === 'admin'){
+    let targetRecord = await RegisUser.findOne({ where: { id : req.body.changed.id }})
+    
+    targetRecord.role = req.body.changed.role
+
+    await targetRecord.save()
+    .then(res.status(200).json({
+      success: true,
+      message: "record updated"
+    }))
+    .catch( (err) => {
+      res.send(err)
+    })
+  }
+  else{
+    return res.status(403).json({
+      success: false,
+      error: "Not authorized"   
+    })   
+  }
+}
+
+
+const changeStatus = async (req, res) => {
+
+  let queryIden = await RegisUser.findOne({ where: { id : req.body.id }})
+
+  if (queryIden.role === 'admin'){
+    let targetRecord = await RegisUser.findOne({ where: { id : req.body.changed.id }})
+    
+    targetRecord.status = req.body.changed.status
+
+    await targetRecord.save()
+    .then(res.status(200).json({
+      success: true,
+      message: "record updated"
+    }))
+    .catch( (err) => {
+      res.send(err)
+    })
+
+  
+    
+  }
+  else{
+    return res.status(403).json({
+      success: false,
+      error: "Not authorized"   
+    })   
+  }
+
+  
+}
+
+
 module.exports = {
   addRegisUser,
   getAllRegisUser,
   getOneRegisUser,
   deleteRegisUser,
   updateRegisUser,
+  changePswd,
+  changeRole,
+  changeStatus
 }
