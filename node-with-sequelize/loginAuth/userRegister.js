@@ -3,7 +3,7 @@ const { encryptPswd } = require('../helper/encryptPassword.js')
 const db = require('../models/setupdb.js')
 const { generateAccessToken } = require('../helper/generateAccessToken.js')
 const jwt = require('jsonwebtoken')
-const { jwtSecret } = require('../config')
+const { jwtSecret, roles } = require('../config')
 
 const RegisUser = db.regisUser
 
@@ -16,17 +16,21 @@ async function registerUser(req, res){
     let encryptedPassword = await encryptPswd(payload.password);
     payload.password = encryptedPassword
 
+    if (!payload.role){
+      payload.role =  roles.USER
+    }
+
 
     const registeredUser = await regisUserController.addRegisUser(payload)
 
-    const accessToken = generateAccessToken(payload.username, payload.id)
+    // const accessToken = generateAccessToken(payload.username, payload.id)
     // console.log(accessToken)
 
     return res.status(200).json({
       status: true,
       data: {
         user: registeredUser.toJSON(),
-        token: accessToken,
+        // token: accessToken,
       }
     })
   }
@@ -49,7 +53,7 @@ function userLogin(req, res, next){
   if (authHeader){
     jwt.verify(authHeader, jwtSecret, (err, decoded) => {
 
-      if(err){
+      if (err){
         res.status(403).json({
           success: "false",
           message: "invalid token"
@@ -75,10 +79,36 @@ function userLogin(req, res, next){
   
 }
 
+async function checkLogin(req, res){
+
+  payload = req.body
+
+  RegisUser.findOne({ where : { id: payload.id }})
+  .then((user) => {
+    if (!user){
+      return res.status(403).json({
+        status: false,
+        error: 'Username does not exist'
+      })
+    }
+    else{
+      const accessToken = generateAccessToken(payload.username, payload.id)
+      res.status(200).json({
+        success: true,
+        message: `Welcome ${payload.username}`,
+        token: accessToken
+      })
+    }
+  })
+  
+
+}
+
 
 
 module.exports = {
   registerUser,
-  userLogin
+  userLogin,
+  checkLogin
 }
 

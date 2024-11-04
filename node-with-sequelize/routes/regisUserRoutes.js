@@ -8,9 +8,9 @@ const router = require('express').Router()
 
 router.post('/register', userLogin.registerUser)
 
-// router.post('/login', userLogin.userLogin)
+router.get('/login', userLogin.checkLogin)
 
-router.get('/allRegisUsers', [userLogin.userLogin, regisUserController.getAllRegisUser])
+router.get('/allUsers', [userLogin.userLogin, regisUserController.getAllRegisUser])
 
 // router.get('/getSingleUser', regisUserController.getOneRegisUser)
 
