@@ -6,7 +6,7 @@ const RegisUser = db.regisUser
 
 const addRegisUser = async (payload, req, res) => {
 
-  console.log(`body is ${payload}`)
+  // console.log(`body is ${payload}`)
   let info =  {
     id : payload.id,
     username: payload.username,
@@ -96,7 +96,7 @@ const updateRegisUser = async (req, res) => {
   let queryIden = await RegisUser.findOne({ where: { id : req.body.id }})
 
   if (queryIden.role === 'admin'){
-    const regisUser = await RegisUser.update(req.body.changed, { where: { id: id }})
+    await RegisUser.update(req.body.changed, { where: { id: id }})
 
     res.status(200).send("record updated")
   }
@@ -126,10 +126,7 @@ const changePswd = async (req, res) => {
     }))
     .catch( (err) => {
       res.send(err)
-    })
-
-  
-    
+    }) 
   }
   else{
     return res.status(403).json({
