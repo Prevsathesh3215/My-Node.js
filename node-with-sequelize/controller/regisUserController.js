@@ -49,7 +49,11 @@ const getOneRegisUser = async (req, res) => {
 
   let id = req.params.id
   // console.log(id)
-  let queryIden = await RegisUser.findOne({ where: { id : req.body.id }})
+  let queryIden = await RegisUser.findOne({
+     where: { 
+      id : req.body.id
+    }
+  })
   
   
   if (queryIden.role === 'admin'){
