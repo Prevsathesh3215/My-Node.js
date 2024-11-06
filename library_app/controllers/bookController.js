@@ -1,10 +1,9 @@
-const db = require('../models/setup_db')
+const db = require('../models/setup_db.js')
 
 const Books = db.books
 
 const addBook = async(req, res) => {
   let info =  {
-    bookId : req.body.bookId,
     title: req.body.title,
     author: req.body.author,
     genre: req.body.genre,
@@ -20,7 +19,9 @@ const addBook = async(req, res) => {
 const getAllBooks = async (req, res) => {
   // console.log(`this is ${Books}`)
 
-  let books = await Books.findAll({})
+  let books = await Books.findAll({
+    include: [db.categories, db.borrower]
+  })
   res.status(200).send(books)
 
 }
@@ -28,8 +29,11 @@ const getAllBooks = async (req, res) => {
 const getOneBook = async (req, res) => {
 
   let id = req.params.bookid
-  console.log(id)
-  let books = await Books.findOne({ where: {bookid : id }})
+  // console.log(id)
+  let books = await Books.findOne({ 
+    where: {bookid : id },
+    include: db.borrower
+  })
   res.status(200).send(books)
 
 }
@@ -44,6 +48,10 @@ const deleteBook = async (req, res) => {
     },
   },
   );
+  res.status(200).json({
+    sucess: true,
+    message: 'Record deleted'
+  })
 
 }
 

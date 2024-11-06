@@ -33,10 +33,16 @@ const db = {}
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
-db.books = require('../models/bookModel.js')(sequelize, DataTypes)
 db.categories = require('../models/categModel.js')(sequelize, DataTypes)
+db.books = require('../models/bookModel.js')(sequelize, DataTypes)
 db.borrower = require('../models/borrowerModel.js')(sequelize, DataTypes)
 db.regisUser = require('./regisUser.js')(sequelize, DataTypes)
+
+db.categories.hasMany(db.books, { foreignKey: 'FKCategID' });
+db.books.belongsTo(db.categories, { foreignKey: 'FKCategID' });
+
+db.books.hasMany(db.borrower, { foreignKey: 'bookId' });
+db.borrower.belongsTo(db.books, { foreignKey: 'bookId' });
 
 sequelize.sync({ force : false})
 .then(() => {
@@ -44,5 +50,7 @@ sequelize.sync({ force : false})
 }).catch((error) => {
   console.error('Unable to create table : ', error);
 });
+
+// console.log(sequelize)
 
 module.exports = db;

@@ -1,13 +1,11 @@
-const db = require('../models/setup_db')
+const db = require('../models/setup_db.js')
 
 const Categories = db.categories
 
 const addCateg = async(req, res) => {
   let info =  {
-    FKCategID : req.body.FKCategID,
     name: req.body.name,
-    description: req.body.description,
-    genre: req.body.genre,
+    description: req.body.description
   }
 
   const categories = await Categories.create(info)
@@ -24,9 +22,18 @@ const getAllCategs = async (req, res) => {
 
 const getOneCateg= async (req, res) => {
 
-  let FKCategID = req.params.FKCategID
-  // console.log(id)
-  let categs = await Categories.findOne({ where: {FKCategID : FKCategID }})
+  // let FKCategID = req.params.FKCategID
+  // // console.log(id)
+  // let categs = await Categories.findOne({ where: {FKCategID : FKCategID }})
+  // res.status(200).send(categs)
+
+  let name = req.params.name
+
+  const categs = await Categories.findOne({
+     where:  { name : name },
+     include: db.books,
+    })
+
   res.status(200).send(categs)
 
 }
@@ -35,12 +42,16 @@ const deleteCateg = async (req, res) => {
 
   let paramId = req.params.FKCategID
   console.log(paramId)
-  await Books.destroy({
+  await Categories.destroy({
     where: {
       FKCategID: paramId,
     },
   },
   );
+  res.status(200).json({
+    success: true,
+    message: 'Record deleted'
+  })
 
 }
 

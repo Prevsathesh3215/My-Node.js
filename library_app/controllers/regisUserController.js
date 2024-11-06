@@ -3,7 +3,6 @@ const { encryptPswd } = require('../helper/encryptPassword.js')
 
 const RegisUser = db.regisUser
 
-
 const addRegisUser = async (payload, req, res) => {
 
   // console.log(`body is ${payload}`)

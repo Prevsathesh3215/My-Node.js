@@ -1,11 +1,16 @@
-const { DATE } = require("sequelize")
+// const { DATE } = require("sequelize")
+// const { sequelize } = require('./setup_db.js')
+// const { Sequelize, DataTypes } = require('sequelize')
+const Books = require('./bookModel')
 
-module.exports = ( sequelize, DataTypes ) => {
-
+module.exports = (sequelize, DataTypes) => {
   const Borrower = sequelize.define('borrower', {
     bookId: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      references: {
+        model: 'books',
+        key: 'bookId'
+      }
     },
     name: {
       type: DataTypes.STRING,
@@ -17,8 +22,8 @@ module.exports = ( sequelize, DataTypes ) => {
     },
     PKborrowerID: {
       type: DataTypes.INTEGER,
-      allowNull: true,
-      primaryKey: true
+      autoIncrement: true,
+      primaryKey: true,
     },
     checkoutDate: {
       type: DataTypes.DATE,
@@ -33,7 +38,7 @@ module.exports = ( sequelize, DataTypes ) => {
       allowNull: true,
     }
   });
-
   return Borrower
-
+  
 }
+

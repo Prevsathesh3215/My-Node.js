@@ -1,7 +1,9 @@
+const { USER, PASSWORD } = require('../secret.js')
+
 module.exports = {
   HOST: '127.0.0.1',
-  USER: 'root',
-  PASSWORD: '615021Ram!',
+  USER: USER,
+  PASSWORD: PASSWORD,
   DB: 'library_db',
   dialect: 'mysql', 
   pool: {

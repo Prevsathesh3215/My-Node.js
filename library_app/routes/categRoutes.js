@@ -13,7 +13,7 @@ router.get('/allCategs', categController.getAllCategs)
 
 //router.get('/addPublishedUsers', categController.getPublishedUser)
 
-router.get('/:FKCategID', categController.getOneCateg)
+router.get('/:name', categController.getOneCateg)
 
 router.put('/:FKCategID', categController.updateCateg)
 

@@ -1,4 +1,4 @@
-const db = require('../models/setup_db')
+const db = require('../models/setup_db.js')
 
 const Borrower = db.borrower
 
@@ -7,7 +7,6 @@ const addBorrower = async(req, res) => {
     bookId : req.body.bookId,
     name: req.body.name,
     contactInfo: req.body.contactInfo,
-    PKborrowerID: req.body.PKborrowerID,
     checkoutDate: req.body.checkoutDate,
     dueDate: req.body.dueDate,
     returnDate: req.body.returnDate,
@@ -27,9 +26,9 @@ const getAllBorrowers = async (req, res) => {
 
 const getOneBorrower = async (req, res) => {
 
-  let bookId = req.params.bookId
+  let PKborrowerID = req.params.PKborrowerID
   // console.log(id)
-  let borrower = await Borrower.findOne({ where: {bookId : bookId }})
+  let borrower = await Borrower.findOne({ where: {PKborrowerID : PKborrowerID }})
   res.status(200).send(borrower)
 
 }

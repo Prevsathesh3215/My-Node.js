@@ -1,5 +1,7 @@
+const { jwtSecret } = require('./secret.js')
+
 module.exports = {
-  jwtSecret: '!!prevsathesh6273288213@!!',
+  jwtSecret: jwtSecret,
   jwtExpirationInSeconds: 60 * 60, // 1 hour
   roles: {
     USER: 'user',
