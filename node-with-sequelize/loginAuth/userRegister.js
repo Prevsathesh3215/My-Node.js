@@ -13,8 +13,9 @@ async function registerUser(req, res){
   // console.log(payload)
 
   try{
-    let encryptedPassword = await encryptPswd(payload.password);
-    payload.password = encryptedPassword
+    //HOOK IN REGISUSER.JS HAS TAKEN OVER THIS FUNCTIONALITY
+    // let encryptedPassword = await encryptPswd(payload.password);
+    // payload.password = encryptedPassword
 
     if (!payload.role){
       payload.role =  roles.USER

@@ -1,3 +1,5 @@
+const { encryptPswd } = require('../helper/encryptPassword.js')
+
 
 module.exports = (sequelize, DataTypes) => {
 
@@ -56,6 +58,12 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     }
   });
+
+
+  regisUser.beforeCreate(async (user, options) => {
+    user.password = await encryptPswd(user.password)
+    console.log('Hook is being run')
+  })
 
   return regisUser
 
