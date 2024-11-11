@@ -84,24 +84,35 @@ async function checkLogin(req, res){
 
   payload = req.body
 
-  RegisUser.findOne({ where : { id: payload.id }})
-  .then((user) => {
-    if (!user){
-      return res.status(403).json({
-        status: false,
-        error: 'Username does not exist'
-      })
-    }
-    else{
-      const accessToken = generateAccessToken(payload.username, payload.id)
-      res.status(200).json({
-        success: true,
-        message: `Welcome ${payload.username}`,
-        token: accessToken
-      })
-    }
-  })
-  
+  if(payload.id === undefined){
+
+    res.status(400).json({
+      success: false,
+      message: 'Error: Fields not stated.'
+    })
+
+  }
+  else{
+    
+    RegisUser.findOne({ where : { id: payload.id }})
+    .then((user) => {
+      if (!user){
+        return res.status(403).json({
+          status: false,
+          error: 'Username does not exist'
+        })
+      }
+      else{
+        const accessToken = generateAccessToken(payload.username, payload.id)
+        res.status(200).json({
+          success: true,
+          message: `Welcome ${payload.username}`,
+          token: accessToken
+        })
+      }
+    })
+
+  }
 
 }
 

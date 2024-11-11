@@ -14,7 +14,18 @@ module.exports = (sequelize, DataTypes) => {
     username: {
       type: DataTypes.STRING,
       allowNull: true,
-      unique: true
+      unique: true,
+      get(){
+        const rawValue = this.getDataValue('username');
+        
+        let firstLetter = rawValue.charAt(0);
+        firstLetter = firstLetter.toUpperCase();
+
+        const remaining = rawValue.slice(1);
+
+        return firstLetter + remaining;
+      }
+
     },
 
     email: {
