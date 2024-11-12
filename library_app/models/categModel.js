@@ -3,6 +3,7 @@
 // const { Sequelize, DataTypes } = require('sequelize')
 
 // console.log(sequelize)
+const zlib = require('zlib')
 
 module.exports = (sequelize, DataTypes) => {
 
@@ -18,7 +19,23 @@ module.exports = (sequelize, DataTypes) => {
     },
     description: {
       type: DataTypes.TEXT,
-      allowNull: true
+      allowNull: true,
+      set(value){
+        const compressed = zlib.deflateSync(value).toString('base64');
+        this.setDataValue('description', compressed);
+      },
+
+      get(){
+        const rawValue = this.getDataValue('description');
+        const uncompressed = zlib.inflateSync(Buffer.from(rawValue, 'base64'));
+        return uncompressed.toString();
+      }
+    },
+    aboutCateg: {
+      type: DataTypes.VIRTUAL,
+      get(){
+        return this.name + ": " +  this.description;
+      }
     }
   },
   {

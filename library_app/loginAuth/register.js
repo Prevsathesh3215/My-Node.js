@@ -5,6 +5,7 @@ const { generateAccessToken } = require('../helper/generateAccessToken.js')
 const jwt = require('jsonwebtoken')
 const { jwtSecret, roles } = require('../config')
 
+
 const RegisUser = db.regisUser
 
 
@@ -13,8 +14,8 @@ async function registerUser(req, res){
   // console.log(payload)
 
   try{
-    let encryptedPassword = await encryptPswd(payload.password);
-    payload.password = encryptedPassword
+    // let encryptedPassword = await encryptPswd(payload.password);
+    // payload.password = encryptedPassword
 
     if (!payload.role){
       payload.role =  roles.USER
@@ -35,7 +36,7 @@ async function registerUser(req, res){
     })
   }
   catch (error){
-    console.error(error);
+    // console.error(error);
       return res.status(500).json({
         status: false,
         message: 'Error registering user',
@@ -95,7 +96,7 @@ async function checkLogin(req, res){
       const accessToken = generateAccessToken(payload.username, payload.id)
       res.status(200).json({
         success: true,
-        message: `Welcome ${payload.username}`,
+        message: `Welcome ${user.firstname}`,
         token: accessToken
       })
     }

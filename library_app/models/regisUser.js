@@ -1,3 +1,5 @@
+const { encryptPswd } = require('../helper/encryptPassword.js')
+
 
 module.exports = (sequelize, DataTypes) => {
 
@@ -6,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
     id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
-      primaryKey: true
+      primaryKey: true,
     },
 
     username: {
@@ -18,13 +20,55 @@ module.exports = (sequelize, DataTypes) => {
     email: {
       type: DataTypes.STRING,
       allowNull: true,
-      unique: true
+      unique: true,
+      validate: {
+        isEmail: true,
+      }
     },
 
     password: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        validatepassword(value){
+          if(value.length > 8){
+
+            if(value.match(/[A-Z]/)){
+
+              if(value.match(/[a-z]/)){
+
+                if(value.match(/[0-9]/)){
+
+                  let specialRegex = /[$&+,:;=?@#|'<>.^*()%!-]/ 
+
+                  if(value.match(specialRegex)){
+                    console.log('ok')
+                  }
+                  else{
+                    throw new Error('No special characters found in the password.')
+                  }
+                }
+                else{
+                  throw new Error('No numbers found in the password.')
+                }
+
+              }
+              else{
+                throw new Error('No lowercase letters found in password.')
+              }
+
+            } 
+            else{
+              throw new Error('No uppercase letters found in password.')
+            }    
+          }
+          else{
+            throw new Error('Character count lesser than 8.')
+          }
+        }
+      }
     },
+
 
     age: {
       type: DataTypes.INTEGER,
@@ -33,29 +77,67 @@ module.exports = (sequelize, DataTypes) => {
 
     role: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      validate : {
+        wrongRole(value){
+          if(value != 'user' && value != 'admin'){
+            throw new Error('Role must be user or admin')
+          }
+        }
+      }
     },
 
     firstname: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      set(value){
+        
+        let firstLetter = value.charAt(0);
+        firstLetter = firstLetter.toUpperCase();
+
+        const final = firstLetter + value.slice(1);
+
+        this.setDataValue('firstname', final)
+      }
     },
     
     lastname: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      set(value){
+        let firstLetter = value.charAt(0);
+        firstLetter = firstLetter.toUpperCase();
+
+        const final = firstLetter + value.slice(1);
+
+        this.setDataValue('lastname', final)
+      }
     },
 
     status: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      defaultValue: 'active'
     },
 
     loginStatus: {
       type: DataTypes.STRING,
-      allowNull: false
-    }
+      allowNull: false,
+      defaultValue: 'not logged in'
+    }, 
+    
+    // hooks: {
+    //   beforeCreate: async (user, options) => {
+    //     user.password = await encryptPswd(user.password)
+    //   }
+    // }
+    
   });
+
+  regisUser.beforeCreate(async (user, options) => {
+    user.password = await encryptPswd(user.password)
+    // console.log('Hook is being run')
+  })
 
   return regisUser
 
