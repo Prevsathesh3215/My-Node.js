@@ -1,7 +1,6 @@
 const bcrypt = require('bcrypt')
 
 
-
 let encryptPswd = async (payloadPassword) => {
   console.log(payloadPassword)
   const saltRounds = 10;

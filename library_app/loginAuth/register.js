@@ -1,9 +1,8 @@
 const regisUserController = require('../controllers/regisUserController.js')
-const { encryptPswd } = require('../helper/encryptPassword.js')
 const db = require('../models/setup_db.js')
 const { generateAccessToken } = require('../helper/generateAccessToken.js')
 const jwt = require('jsonwebtoken')
-const { jwtSecret, roles } = require('../config')
+const { jwtSecret, roles, jwtExpirationInSeconds } = require('../config')
 
 
 const RegisUser = db.regisUser
@@ -82,29 +81,48 @@ function userLogin(req, res, next){
 
 async function checkLogin(req, res){
 
-  payload = req.body
+  try{
+    payload = req.body
 
-  RegisUser.findOne({ where : { id: payload.id }})
-  .then((user) => {
-    if (!user){
-      return res.status(403).json({
-        status: false,
-        error: 'Username does not exist'
-      })
-    }
-    else{
-      const accessToken = generateAccessToken(payload.username, payload.id)
-      res.status(200).json({
-        success: true,
-        message: `Welcome ${user.firstname}`,
-        token: accessToken
-      })
-    }
-  })
+    // FIND THE ID OF THE CLIENT IN DATABASE, IF OK GENERATE JWT TOKEN, IF NOT SEND ERROR
+    RegisUser.findOne({ where : { id: payload.id }})
+    .then(async (user) => {
+      if (!user){
+        return res.status(403).json({
+          status: false,
+          error: 'Username does not exist'
+        })
+      }
+      else{
+        const accessToken = generateAccessToken(payload.username, payload.id);
+        user.loginStatus = 'Logged In';
+        await user.save();
+  
+        //SET TIMEOUT FOR JWT TOKEN EXPIRY AFTER TOKEN GENERATED, RUN AFTER A CERTAIN TIME 
+        setTimeout(async () => {
+          // console.log('This code is run')
+          user.loginStatus = 'Not Logged In';
+          await user.save()
+        }, jwtExpirationInSeconds * 1000)
   
 
-}
+        res.status(200).json({
+          success: true,
+          message: `Welcome ${user.firstname}`,
+          token: accessToken
+        })
+      }
+    })
+  }
+  catch(err){
+    res.status(500).json({
+      success: false,
+      message: 'An error occured',
+      error: err.message
+    })
+  }
 
+}
 
 
 module.exports = {

@@ -1,6 +1,7 @@
 const { encryptPswd } = require('../helper/encryptPassword.js')
 
 
+
 module.exports = (sequelize, DataTypes) => {
 
   const regisUser = sequelize.define("regisUser",  {
@@ -19,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
 
     email: {
       type: DataTypes.STRING,
-      allowNull: true,
+      allowNull: false,
       unique: true,
       validate: {
         isEmail: true,
@@ -29,6 +30,7 @@ module.exports = (sequelize, DataTypes) => {
     password: {
       type: DataTypes.STRING,
       allowNull: false,
+      unique: true,
       validate: {
         validatepassword(value){
           if(value.length > 8){
@@ -123,7 +125,7 @@ module.exports = (sequelize, DataTypes) => {
     loginStatus: {
       type: DataTypes.STRING,
       allowNull: false,
-      defaultValue: 'not logged in'
+      defaultValue: 'Not logged in'
     }, 
     
     // hooks: {

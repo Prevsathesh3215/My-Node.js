@@ -11,9 +11,16 @@ const addBook = async(req, res) => {
     condition: req.body.condition,
     FKCategID: req.body.FKCategID
   }
-
-  const books = await Books.create(info)
-  res.status(200).send(books)
+  try{
+    const books = await Books.create(info)
+    res.status(200).send(books)
+  }
+  catch(err){
+    res.status(401).json({
+      success:false,
+      error: err.message
+    })
+  }
 }
 
 const getAllBooks = async (req, res) => {
@@ -41,7 +48,7 @@ const getOneBook = async (req, res) => {
 const deleteBook = async (req, res) => {
 
   let paramId = req.params.bookid
-  console.log(paramId)
+  // console.log(paramId)
   await Books.destroy({
     where: {
       bookid: paramId,

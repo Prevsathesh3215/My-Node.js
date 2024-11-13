@@ -3,6 +3,7 @@ const db = require('../models/setup_db.js')
 const Borrower = db.borrower
 
 const addBorrower = async(req, res) => {
+  
   let info =  {
     bookId : req.body.bookId,
     name: req.body.name,
@@ -11,9 +12,16 @@ const addBorrower = async(req, res) => {
     dueDate: req.body.dueDate,
     returnDate: req.body.returnDate,
   }
-
-  const borrower = await Borrower.create(info)
-  res.status(200).send(borrower)
+  try{
+    const borrower = await Borrower.create(info)
+    res.status(200).send(borrower)
+  }
+  catch(err){
+    res.status(401).json({
+      success:false,
+      error: err.message
+    })
+  }
 }
 
 const getAllBorrowers = async (req, res) => {

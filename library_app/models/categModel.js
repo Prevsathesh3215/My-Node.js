@@ -4,6 +4,7 @@
 
 // console.log(sequelize)
 const zlib = require('zlib')
+const { capitalizeOneWord, capitalizeWords } = require('../utils/capitalize')
 
 module.exports = (sequelize, DataTypes) => {
 
@@ -16,6 +17,9 @@ module.exports = (sequelize, DataTypes) => {
     name: {
       type: DataTypes.STRING,
       allowNull: true,
+      set(value){
+        this.setDataValue('name', capitalizeOneWord(value))
+      }
     },
     description: {
       type: DataTypes.TEXT,
@@ -28,7 +32,9 @@ module.exports = (sequelize, DataTypes) => {
       get(){
         const rawValue = this.getDataValue('description');
         const uncompressed = zlib.inflateSync(Buffer.from(rawValue, 'base64'));
-        return uncompressed.toString();
+        const value =  uncompressed.toString();
+
+        return capitalizeWords(value);
       }
     },
     aboutCateg: {
@@ -39,7 +45,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   },
   {
-    tableName: 'categories'
+    tableName: 'categories',
   });
   return Categories
 }

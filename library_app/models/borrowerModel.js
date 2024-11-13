@@ -2,9 +2,12 @@
 // const { sequelize } = require('./setup_db.js')
 // const { Sequelize, DataTypes } = require('sequelize')
 const Books = require('./bookModel')
+const { capitalizeOneWord} = require('../utils/capitalize')
+
 
 module.exports = (sequelize, DataTypes) => {
   const Borrower = sequelize.define('borrower', {
+
     bookId: {
       type: DataTypes.INTEGER,
       references: {
@@ -15,10 +18,22 @@ module.exports = (sequelize, DataTypes) => {
     name: {
       type: DataTypes.STRING,
       allowNull: true,
+      set(value){
+        this.setDataValue('name', capitalizeOneWord(value))
+      }
     },
     contactInfo: {
       type: DataTypes.STRING,
-      allowNull: true
+      allowNull: true,
+      validate: {
+        validateInfo(value){
+          const checker = /[a-z][A-Z]/
+          if(value.match(checker)){
+            throw new Error('Contact number must be numbers only.')
+          }
+        }
+
+      }
     },
     PKborrowerID: {
       type: DataTypes.INTEGER,
@@ -37,6 +52,9 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DATE,
       allowNull: true,
     }
+  },
+  {
+    initialAutoIncrement: 3001
   });
   return Borrower
   
