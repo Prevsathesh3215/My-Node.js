@@ -38,8 +38,20 @@ db.units = require('../models/unitsModel.js')(sequelize, DataTypes)
 db.unitsData = require('./unitDataModel.js')(sequelize, DataTypes)
 db.regisUser = require('./regisUser.js')(sequelize, DataTypes)
 
+db.units.hasOne(db.unitsData, { 
+  foreignKey: 'unitid',
+  onUpdate: 'CASCADE',
+  onDelete: 'CASCADE',
+ })
 
-sequelize.sync({ force : false})
+db.unitsData.belongsTo(db.units, { 
+  foreignKey: 'unitid',
+  onUpdate: 'CASCADE',
+  onDelete: 'CASCADE',
+})
+
+
+sequelize.sync({ alter: true })
 .then(() => {
   console.log('All tables created successfully!');
 }).catch((error) => {

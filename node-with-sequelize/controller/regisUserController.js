@@ -3,7 +3,6 @@ const { encryptPswd } = require('../helper/encryptPassword.js')
 
 const RegisUser = db.regisUser
 
-
 const addRegisUser = async (payload, req, res) => {
 
   // console.log(`body is ${payload}`)
@@ -40,8 +39,10 @@ const getAllRegisUser = async (req, res) => {
       error: "Not authorized"
     })
   }
-}
 
+  
+
+}
 
 const getOneRegisUser = async (req, res) => {
 
@@ -70,7 +71,7 @@ const deleteRegisUser = async (req, res) => {
 
   let paramId = req.params.id
   // console.log(paramId)
-  let queryIden = await RegisUser.findOne({ where: { id : req.params.id }})
+  let queryIden = await RegisUser.findOne({ where: { id : req.body.id }})
 
   if (queryIden.role === 'admin'){
     await RegisUser.destroy({
@@ -88,13 +89,14 @@ const deleteRegisUser = async (req, res) => {
     })
   }
 
+
 }
 
 
 const updateRegisUser = async (req, res) => {
 
   let id = req.params.id
-  let queryIden = await RegisUser.findOne({ where: { id : req.params.id }})
+  let queryIden = await RegisUser.findOne({ where: { id : req.body.id }})
 
   if (queryIden.role === 'admin'){
     await RegisUser.update(req.body.changed, { where: { id: id }})

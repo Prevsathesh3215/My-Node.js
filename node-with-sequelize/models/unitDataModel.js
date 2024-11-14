@@ -2,11 +2,11 @@ module.exports = (sequelize, DataTypes) => {
 
   const UnitsData = sequelize.define("unitsdata", {
     time: {
-      type: DataTypes.STRING,
+      type: DataTypes.TIME,
       allowNull: true,
     },
     mileage: {
-      type: DataTypes.STRING,
+      type: DataTypes.FLOAT,
       allowNull: true
     },
     speed: {
@@ -26,9 +26,16 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true
     },
     unitid: {
-      type: DataTypes.STRING,
-      allowNull: true,
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      references: {
+        model: 'units',
+        key: 'unitid'
+      }
     }
+  },{
+    tableName: 'unitsdata',
+    timestamps: false,
   });
 
   return UnitsData

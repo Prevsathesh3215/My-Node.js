@@ -1,14 +1,12 @@
 module.exports = (sequelize, DataTypes) => {
 
   const Units = sequelize.define("units", {
-    id: {
-      type: DataTypes.STRING,
-      allowNull: true,
-      primaryKey: true
-    },
     unitid: {
-      type: DataTypes.STRING,
-      allowNull: true
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      allowNull: false,
+      primaryKey: true, 
+      unique: true
     },
     meta: {
       type: DataTypes.STRING,
@@ -18,6 +16,11 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull : true
     }
+
+  },{
+    tableName: 'units',
+    initialAutoIncrement: 1001,
+    timestamps: false
   });
 
   return Units

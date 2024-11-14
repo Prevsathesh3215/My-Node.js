@@ -7,56 +7,100 @@ const addUnit = async (req, res) => {
 
   console.log(`body is ${req.body}`)
   let info =  {
-    id : req.body.id,
     unitid: req.body.unitid,
     meta: req.body.meta,
-    assetname: req.body.assetname
+    assetName: req.body.assetName
   }
 
-  const units = await Units.create(info)
-  res.status(200).send(units)
+  try{
+
+    const units = await Units.create(info)
+    res.status(200).send(units)
+    
+  }
+  catch(err){
+    res.status(500).json({
+      success: false,
+      error: err.message
+    })
+  }
 
 }
 
 const getAllUnits = async (req, res) => {
-  console.log(`this is ${Units}`)
+  // console.log(`this is ${Units}`)
 
-  let units = await Units.findAll({})
-  res.status(200).send(units)
+  try{
+    let units = await Units.findAll({
+      include: db.unitsData
+    })
+    res.status(200).send(units)
+  }
+  catch(err){
+    res.status(500).json({
+      success: false,
+      error: err.message
+    })
+  }
+
 
 }
 
 const getOneUnit = async (req, res) => {
 
-  let id = req.params.id
-  console.log(id)
-  let units = await Units.findOne({ where: {id : id }})
-  res.status(200).send(units)
+  try{
+    let id = req.params.unitid
+    // console.log(id)
+    let units = await Units.findOne({ where: {unitid : id }})
+    res.status(200).send(units)
+  }
+  catch(err){
+    res.status(500).json({
+      success: false,
+      error: err.message
+    })
+  }
 
 }
 
 const deleteUnit = async (req, res) => {
 
-  let paramId = req.params.id
-  console.log(paramId)
-  await Units.destroy({
-    where: {
-      id: paramId,
+  try{
+    let paramId = req.params.unitid
+    // console.log(paramId)
+    await Units.destroy({
+      where: {
+        unitid: paramId,
+      },
     },
-  },
-  );
-  res.status(200).send('record deleted')
+    );
+    res.status(200).send('record deleted')
+  }
+  catch(err){
+    res.status(500).json({
+      success: false,
+      error: err.message
+    })
+  }
 
 }
 
 
 const updateUnit = async (req, res) => {
 
-  let id = req.params.id
+  try{
+    let id = req.params.id
 
-  const unit = await Units.update(req.body, { where: { id: id }})
-
-  res.status(200).send("record updated")
+    const unit = await Units.update(req.body, { where: { id: id }})
+  
+    res.status(200).send("record updated")
+  }
+  catch(err){
+    res.status(500).json({
+      success: false,
+      error: err.message
+    })
+  }
  
 
 }
