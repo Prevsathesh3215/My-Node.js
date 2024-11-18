@@ -2,8 +2,8 @@
 // const { sequelize } = require('./setup_db.js')
 // const { Sequelize, DataTypes } = require('sequelize')
 const Books = require('./bookModel')
-const { capitalizeOneWord} = require('../utils/capitalize')
-
+const { capitalizeOneWord } = require('../utils/capitalize')
+const date = require('date-and-time')
 
 module.exports = (sequelize, DataTypes) => {
   const Borrower = sequelize.define('borrower', {
@@ -27,8 +27,9 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
       validate: {
         validateInfo(value){
-          const checker = /[a-z][A-Z]/
+          const checker = /[a-zA-Z!@#$%^&*(),.?":{}|<>\\?]/g
           if(value.match(checker)){
+            console.log('checker is being run')
             throw new Error('Contact number must be numbers only.')
           }
         }
@@ -42,11 +43,11 @@ module.exports = (sequelize, DataTypes) => {
     },
     checkoutDate: {
       type: DataTypes.DATE,
-      allowNull: false,
+      allowNull: true,
     },
     dueDate: {
       type: DataTypes.DATE,
-      allowNull: false,
+      allowNull: true,
     },
     returnDate: {
       type: DataTypes.DATE,
@@ -54,8 +55,9 @@ module.exports = (sequelize, DataTypes) => {
     }
   },
   {
-    initialAutoIncrement: 3001
+    initialAutoIncrement: 3001,
   });
+
   return Borrower
   
 }

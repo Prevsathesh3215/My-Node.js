@@ -65,11 +65,22 @@ const deleteBook = async (req, res) => {
 
 const updateBook = async (req, res) => {
 
-  let id = req.params.bookid
 
-  const book = await Books.update(req.body, { where: { bookid: id }})
+  try{
+    let id = req.params.bookid
 
-  res.status(200).send("record updated")
+    const book = await Books.update(req.body, { where: { bookid: id }})
+  
+    res.status(200).send("record updated")
+    
+  }
+  catch(err){
+    res.status(500).json({
+      success:false,
+      error: err.message
+    })
+  }
+
  
 
 }

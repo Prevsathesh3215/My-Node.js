@@ -46,6 +46,7 @@ module.exports = (sequelize, DataTypes) => {
   },
   {
     tableName: 'categories',
+    paranoid: true
   });
   return Categories
 }

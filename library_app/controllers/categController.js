@@ -15,6 +15,7 @@ const addCateg = async(req, res) => {
 const getAllCategs = async (req, res) => {
   // console.log(`this is ${Books}`)
 
+  await Categories.restore() //restores soft deleted rows
   let categ = await Categories.findAll({})
   res.status(200).send(categ)
 
@@ -41,7 +42,7 @@ const getOneCateg= async (req, res) => {
 const deleteCateg = async (req, res) => {
 
   let paramId = req.params.FKCategID
-  console.log(paramId)
+  // console.log(paramId)
   await Categories.destroy({
     where: {
       FKCategID: paramId,
@@ -58,11 +59,26 @@ const deleteCateg = async (req, res) => {
 
 const updateCateg = async (req, res) => {
 
-  let id = req.params.FKCategID
+  try{
 
-  const categ = await Categories.update(req.body, { where: { FKCategID: id }})
+    let id = req.params.FKCategID;
 
-  res.status(200).send("record updated")
+    const categ = await Categories.update(req.body, { where: { FKCategID: id }});
+  
+    res.status(200).json({
+      success: true,
+      message: 'Record updated!'
+    });
+
+  }
+  catch(err){
+    res.status(500).json({
+      success: false,
+      error: err.message
+    });
+  }
+
+
  
 
 }

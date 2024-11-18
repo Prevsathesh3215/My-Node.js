@@ -44,7 +44,7 @@ db.books.belongsTo(db.categories, { foreignKey: 'FKCategID' });
 db.books.hasMany(db.borrower, { foreignKey: 'bookId' });
 db.borrower.belongsTo(db.books, { foreignKey: 'bookId' });
 
-sequelize.sync({ force : false})
+sequelize.sync({ alter: true })
 .then(() => {
   console.log('All tables created successfully!');
 }).catch((error) => {

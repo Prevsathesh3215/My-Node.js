@@ -74,7 +74,14 @@ module.exports = (sequelize, DataTypes) => {
 
     age: {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        validateAge(value){
+          if(value < 5 && value > 100){
+            throw new Error('Invalid age.')
+          }
+        } 
+      }
     },
 
     role: {

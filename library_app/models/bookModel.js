@@ -35,13 +35,25 @@ module.exports = (sequelize, DataTypes) => {
         this.setDataValue('genre', capitalizeOneWord(value))
       }
     },
+
     pubDate: {
       type: DataTypes.DATE,
       allowNull: false,
     },
+    
     condition: {
       type: DataTypes.STRING,
       allowNull: false,
+      validate:{
+        validateCondition(value){
+          if (value != 'Excellent' && value != 'excellent' && value != 'Good' && value != 'good' && value != 'Poor' && value != 'poor'){
+            throw new Error('Invalid condition entry')
+          }
+        }
+      },
+      set(value){
+        this.setDataValue('condition', capitalizeOneWord(value))
+      }
     },
     FKCategID: {
       type: DataTypes.INTEGER,
