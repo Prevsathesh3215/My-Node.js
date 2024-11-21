@@ -44,6 +44,10 @@ const getWeather = async (lat, lon) => {
     url: `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`
   })
 
+  resp.data.dt = new Date(resp.data.dt * 1000)
+  resp.data.sys.sunrise = new Date(resp.data.sys.sunrise * 1000)
+  resp.data.sys.sunset = new Date(resp.data.sys.sunset * 1000)
+
   return resp.data
 }
 
