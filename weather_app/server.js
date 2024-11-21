@@ -5,7 +5,7 @@ const { getLocation } = require('./req')
 const app = express()
 
 app.use(cors({
-  origin: 'http://localhost:9500', // Allow only requests from this origin
+  origin: '*', // Allow only requests from this origin
   methods: 'GET,POST, PUT, DELETE', // Allow only these methods
   allowedHeaders: ['Content-Type', 'Authorization']
 }))
