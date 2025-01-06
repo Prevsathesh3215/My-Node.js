@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <title>BookWyrm - Login</title>
+      
+      <link rel="stylesheet" href="./vue-practice-css.css">
+
+      <script src="https://unpkg.com/vue@3.0.11/dist/vue.global.js"></script>
+      <script src="https://unpkg.com/vee-validate"></script>
+
+    </head>
+    <body>
+
+      <div id="app">
+
+        <webpage-header-component></webpage-header-component>
+
+
+        <div class="big-container">
+
+          <div class="sidebar">Here</div>
+
+
+          <div style="
+          display: flex; 
+          flex-direction: column;
+          align-items: center;
+          margin-top: 60px;
+          max-width: 500px;" class="form-container">
+            <h1>Log in to BookWyrm&#8482;</h1>
+
+
+            <form id='Library-Form'>
+
+              <div style="max-width: 300px; padding: 10px;"> 
+                <label for="label-username">Username:</label><br>
+                <input type="text" id="username" name="username"><br>  
+              </div>
+
+
+              <div style="max-width: 300px; padding: 10px;">
+                <label for="label-password">Password:</label><br>
+                <input type="password" id="password" name="password"><br>
+              </div>
+
+              <input style="
+              margin: 10px;; 
+              margin-top: 30px;
+              color: white;
+              background-color: rgb(2, 130, 23); 
+              border: 1px solid #bad5e2;
+              cursor: pointer;"
+              type="submit" value="Submit" class="btn"><br>
+
+            </form>
+
+            <!-- <div>
+              <button style="
+                font-family: Tahoma;
+                font-weight: bold;
+                font-size: 15px;
+                width: 180px;
+                height: 40px;
+                border-radius: 10px;
+                margin-top: 20px;
+                cursor: pointer;
+              " id="Users-Button">Get Users<br>
+            </div> -->
+          </div>
+
+
+        </div>
+
+        
+        
+
+
+      </div>
+
+
+      <script src="./vue-practice-js.js"></script>
+
+      <script src="webpage-header.js"></script>
+
+      <script>
+        const mountedApp = app.mount('#app')
+      </script>
+
+    </body>
+  </html>
